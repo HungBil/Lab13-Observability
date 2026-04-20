@@ -4,18 +4,18 @@
 
 ## 1. Team Metadata
 - [GROUP_NAME]: 
-- [REPO_URL]: 
+- [REPO_URL]: [Lab13-Observability](https://github.com/HungBil/Lab13-Observability)
 - [MEMBERS]:
-  - Member A: [Name] | Role: Logging & PII
-  - Member B: [Name] | Role: Tracing & Enrichment
-  - Member C: [Name] | Role: SLO & Alerts
-  - Member D: [Name] | Role: Load Test & Dashboard
+  - Member A: [Khuất Văn Vương] | Role: Logging & PII
+  - Member B: [Lưu Lương Vi Nhân] | Role: Tracing & Enrichment
+  - Member C: [Nguyễn Đông Hưng] | Role: SLO & Alerts
+  - Member D: [Huỳnh Văn Nghĩa] | Role: Tester, Incident Response & Report (scripts/ & docs/)
   - Member E: [Name] | Role: Demo & Report
 
 ---
 
 ## 2. Group Performance (Auto-Verified)
-- [VALIDATE_LOGS_FINAL_SCORE]: /100
+- [VALIDATE_LOGS_FINAL_SCORE]: 100/100
 - [TOTAL_TRACES_COUNT]: 
 - [PII_LEAKS_FOUND]: 
 
@@ -24,13 +24,18 @@
 ## 3. Technical Evidence (Group)
 
 ### 3.1 Logging & Tracing
-- [EVIDENCE_CORRELATION_ID_SCREENSHOT]: [Path to image]
-- [EVIDENCE_PII_REDACTION_SCREENSHOT]: [Path to image]
-- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [Path to image]
-- [TRACE_WATERFALL_EXPLANATION]: (Briefly explain one interesting span in your trace)
+- **EVIDENCE_CORRELATION_ID_SCREENSHOT**
+![EVIDENCE_CORRELATION_ID_SCREENSHOT](./screenshots/EVIDENCE_CORRELATION_ID_SCREENSHOT.png) 
+- **EVIDENCE_PII_REDACTION_SCREENSHOT**
+![EVIDENCE_PII_REDACTION_SCREENSHOT](./screenshots/EVIDENCE_PII_REDACTION_SCREENSHOT.png) 
+- **EVIDENCE_TRACE_WATERFALL_SCREENSHOT**
+![EVIDENCE_TRACE_WATERFALL_SCREENSHOT](./screenshots/EVIDENCE_TRACE_WATERFALL_SCREENSHOT.png) 
+- **TRACE_WATERFALL_EXPLANATION**: Trace cho thấy `run` tổng khoảng 0.15s, trong đó nhánh `generate` chiếm gần như toàn bộ thời gian xử lý (30 in -> 122 out, tổng 152 tokens, cost khoảng $0.00192), còn `retrieve` rất nhỏ. Điều này cho thấy độ trễ chính nằm ở bước sinh câu trả lời (LLM generation), không phải bước retrieval.
 
 ### 3.2 Dashboard & SLOs
-- [DASHBOARD_6_PANELS_SCREENSHOT]: [Path to image]
+- **DASHBOARD_6_PANELS_SCREENSHOT** 
+![alt](./screenshots/dashboard.png)
+
 - [SLO_TABLE]:
 | SLI | Target | Window | Current Value |
 |---|---:|---|---:|
@@ -40,14 +45,14 @@
 
 ### 3.3 Alerts & Runbook
 - [ALERT_RULES_SCREENSHOT]: [Path to image]
-- [SAMPLE_RUNBOOK_LINK]: [docs/alerts.md#L...]
+- [SAMPLE_RUNBOOK_LINK]: docs/alerts.md#high-latency-p95
 
 ---
 
 ## 4. Incident Response (Group)
 - [SCENARIO_NAME]: rag_slow
 - [SYMPTOMS_OBSERVED]: Khách hàng phản hồi thời gian trả lời chat (latency) tăng vọt. Trên load test, latency bình bình là ~800ms đã tăng lên khoảng ~5300ms.
-- [ROOT_CAUSE_PROVED_BY]: Log ghi nhận `latency_ms` nhảy lên mức >2650ms ở sự kiện `response_sent`. Nhìn sâu vào Langfuse trace (nếu có instrument) hoặc source code, hàm `mock_rag.retrieve` bị chặn lại trong 2.5s bằng lệnh `time.sleep(2.5)`. Do API chỉ chạy 1 luồng xử lý đồng thời, request bị dồn ứ khiến khách hàng phải chờ hơn 5 giây.
+- [ROOT_CAUSE_PROVED_BY]: Metrics cho thay P95 latency vuot nguong; trace waterfall xac dinh nut that co chai nam o span `retrieve`; logs `response_sent` xac nhan `latency_ms` tang bat thuong. Doi chieu source code cho thay khi bat incident `rag_slow`, ham `mock_rag.retrieve` bi chan 2.5s boi `time.sleep(2.5)`, dan den xep hang request va tang tail latency.
 - [FIX_ACTION]: Tắt cờ sự cố (`/incidents/rag_slow/disable`). 
 - [PREVENTIVE_MEASURE]: Cài đặt timeout cứng cho API truy xuất (Vector DB), đồng thời cấu hình cảnh báo SLO cho P95 Latency để phát hiện sớm. Tối ưu hóa xử lý bất đồng bộ (async) cho I/O bound. 
 
@@ -69,11 +74,11 @@
 
 ### [MEMBER_D_NAME]
 - [TASKS_COMPLETED]: 
-  - Khởi chạy tải giả lập (Load Testing) bằng `scripts/load_test.py` với nhiều mức độ concurrency.
-  - Kích hoạt sự cố `rag_slow` (Incident Injection) và phân tích nguyên nhân gốc rễ (RCA) dựa trên Logs và Metrics.
-  - Tổng hợp dữ liệu và viết biên bản xử lý sự cố.
-  - (Sắp tới) Demo toàn bộ quy trình cho giảng viên.
-- [EVIDENCE_LINK]: Link pull request hoặc commit log mô tả load test & incident analysis. 
+  - Chay load test bang `scripts/load_test.py` voi nhieu muc `--concurrency` de do kha nang chiu tai va ghi nhan do tre.
+  - Tiem incident bang `scripts/inject_incident.py --scenario rag_slow`, so sanh truoc/sau va thuc hien RCA theo flow Metrics -> Traces -> Logs.
+  - Tong hop bang chung ky thuat (logs, traces, dashboard, alert runbook) vao `docs/blueprint-template.md` va `docs/grading-evidence.md`.
+  - Chuan bi demo script va thong diep thuyet trinh cho giang vien o phan Incident Response & Debugging.
+- [EVIDENCE_LINK]: [Link pull request/commit cho scripts + docs cua Member D]
 
 ### [MEMBER_E_NAME]
 - [TASKS_COMPLETED]: 
