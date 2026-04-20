@@ -89,7 +89,8 @@
   - Tiêm sự cố bằng `scripts/inject_incident.py --scenario rag_slow`, so sánh trước/sau và thực hiện RCA theo flow Metrics -> Traces -> Logs.
   - Tổng hợp bằng chứng kỹ thuật (logs, traces, dashboard, alert runbook) vào `docs/blueprint-template.md` và `docs/grading-evidence.md`.
   - Chuẩn bị demo script và thông điệp thuyết trình cho giảng viên ở phần Incident Response & Debugging.
-- [EVIDENCE_LINK]: 
+- [EVIDENCE_LINK]:
+  - https://github.com/HungBil/Lab13-Observability/pull/4
 
 ### [MEMBER_E_NAME]
 - [TASKS_COMPLETED]: 
