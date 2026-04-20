@@ -77,7 +77,12 @@
 
 ### [Lưu Lương Vi Nhân]
 - [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+  - Tích hợp Langfuse SDK để theo dõi luồng thực thi thông qua Traces & Spans.
+  - Gắn decorator `@observe(as_type="span")` vào hàm `retrieve` (`app/mock_rag.py`) để theo dõi riêng lẻ quá trình truy xuất tài liệu.
+  - Gắn decorator `@observe(as_type="generation")` vào hàm `generate` (`app/mock_llm.py`) để mark bước gọi mô hình AI.
+  - Bổ sung `langfuse_context.update_current_observation` để bóc tách và capture chính xác metadata (input prompt, output text) và token usage (input_tokens, output_tokens) trả về từ hàm LLM, giúp đo được chi phí (cost) trên Langfuse Dashboard.
+- [EVIDENCE_LINK]:
+  - https://github.com/HungBil/Lab13-Observability/commit/522109fec9eba8962eb2e1c354a4e5874b0dc79f
 
 ### [Nguyễn Đông Hưng]
 - [TASKS_COMPLETED]: 
