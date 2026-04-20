@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import os
+from typing import Any
 
-from langfuse.decorators import langfuse_context, observe
+from langfuse import observe
+from langfuse import get_client
+
+langfuse = get_client()
 
 
 def tracing_enabled() -> bool:
@@ -10,4 +14,4 @@ def tracing_enabled() -> bool:
 
 
 def flush_traces() -> None:
-    pass
+    langfuse.flush()

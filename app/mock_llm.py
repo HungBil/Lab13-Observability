@@ -5,7 +5,7 @@ import time
 from dataclasses import dataclass
 
 from .incidents import STATE
-from .tracing import langfuse_context, observe
+from .tracing import langfuse, observe
 
 
 @dataclass
@@ -37,7 +37,7 @@ class FakeLLM:
             "Use retrieved context and keep responses concise."
         )
         
-        langfuse_context.update_current_observation(
+        langfuse.update_current_generation(
             usage={"input": input_tokens, "output": output_tokens},
             model=self.model,
             input=prompt,
