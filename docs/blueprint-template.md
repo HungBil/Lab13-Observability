@@ -81,7 +81,14 @@
 
 ### [Nguyễn Đông Hưng]
 - [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+  - Thiết kế Dashboard 6 panels trên Langfuse Cloud: Latency, Traffic (Count), Cost, Tokens, Quality (Scores), Sessions.
+  - Định nghĩa SLO thresholds trong `config/slo.yaml` (Latency P95 < 3000ms, Error Rate < 2%, Cost < $2.5/day, Quality > 0.75).
+  - Định nghĩa 3 Alert Rules trong `config/alert_rules.yaml` (high_latency_p95, high_error_rate, cost_budget_spike) kèm runbook link.
+  - Fix `app/tracing.py` tương thích Langfuse SDK v3+ để traces hiển thị realtime trên Langfuse Cloud UI.
+  - Điền bảng SLO_TABLE với Current Value thực tế từ dashboard.
+- [EVIDENCE_LINK]:
+  - https://github.com/HungBil/Lab13-Observability/commit/6c4cd8f
+  - https://github.com/HungBil/Lab13-Observability/commit/a11df04
 
 ### [Huỳnh Văn Nghĩa]
 - [TASKS_COMPLETED]: 
