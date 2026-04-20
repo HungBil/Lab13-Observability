@@ -45,11 +45,11 @@
 ---
 
 ## 4. Incident Response (Group)
-- [SCENARIO_NAME]: (e.g., rag_slow)
-- [SYMPTOMS_OBSERVED]: 
-- [ROOT_CAUSE_PROVED_BY]: (List specific Trace ID or Log Line)
-- [FIX_ACTION]: 
-- [PREVENTIVE_MEASURE]: 
+- [SCENARIO_NAME]: rag_slow
+- [SYMPTOMS_OBSERVED]: Khách hàng phản hồi thời gian trả lời chat (latency) tăng vọt. Trên load test, latency bình bình là ~800ms đã tăng lên khoảng ~5300ms.
+- [ROOT_CAUSE_PROVED_BY]: Log ghi nhận `latency_ms` nhảy lên mức >2650ms ở sự kiện `response_sent`. Nhìn sâu vào Langfuse trace (nếu có instrument) hoặc source code, hàm `mock_rag.retrieve` bị chặn lại trong 2.5s bằng lệnh `time.sleep(2.5)`. Do API chỉ chạy 1 luồng xử lý đồng thời, request bị dồn ứ khiến khách hàng phải chờ hơn 5 giây.
+- [FIX_ACTION]: Tắt cờ sự cố (`/incidents/rag_slow/disable`). 
+- [PREVENTIVE_MEASURE]: Cài đặt timeout cứng cho API truy xuất (Vector DB), đồng thời cấu hình cảnh báo SLO cho P95 Latency để phát hiện sớm. Tối ưu hóa xử lý bất đồng bộ (async) cho I/O bound. 
 
 ---
 
@@ -69,7 +69,11 @@
 
 ### [MEMBER_D_NAME]
 - [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+  - Khởi chạy tải giả lập (Load Testing) bằng `scripts/load_test.py` với nhiều mức độ concurrency.
+  - Kích hoạt sự cố `rag_slow` (Incident Injection) và phân tích nguyên nhân gốc rễ (RCA) dựa trên Logs và Metrics.
+  - Tổng hợp dữ liệu và viết biên bản xử lý sự cố.
+  - (Sắp tới) Demo toàn bộ quy trình cho giảng viên.
+- [EVIDENCE_LINK]: Link pull request hoặc commit log mô tả load test & incident analysis. 
 
 ### [MEMBER_E_NAME]
 - [TASKS_COMPLETED]: 
