@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -50,7 +53,7 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
         user_id_hash=hash_user_id(body.user_id),
         session_id=body.session_id,
         feature=body.feature,
-        model=agent.model_name,
+        model=agent.model,
         env=os.getenv("APP_ENV", "dev"),
     )
     
